@@ -54,14 +54,14 @@ public class ZoneCommand implements CommandExecutor {
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("find_hover")))
 					.create()))
 					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone find"))
-					.append("\n" + this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("sign")))
-					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("sign_hover")))
-					.create()))
-					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone create"))
+					//.append("\n" + this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("sign")))
+					//.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("sign_hover")))
+					//.create()))
+					//.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone create"))
 					.append("\n" + this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("create")))
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("create_hover")))
 					.create()))
-					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone finish"))
+					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone create"))
 					.append("\n" + this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("addmember")))
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("addmember_hover")))
 					.create()))
@@ -102,35 +102,44 @@ public class ZoneCommand implements CommandExecutor {
 				
 				if((args[0].equalsIgnoreCase("create")) && (args.length < 2)) {
 					
-					if(!player.getInventory().contains(Material.STICK)) {
+                        if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
 						
-						ItemStack itemstack = new ItemStack(Material.STICK, 1);
-						player.getInventory().addItem(new ItemStack[] { itemstack });
-					}
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_in_world")));
+						return true;
+					   }
 					
-					player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
-					player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_sign")));
-					this.plugin.Tool.put(player.getName(), "sign");
-					return true;
-				}
-				
-				if((args[0].equalsIgnoreCase("finish")) && (args.length < 2)) {
+                        if(!this.plugin.Tool.containsKey(player.getName())) {
+						
+                            if(!player.getInventory().contains(Material.STICK)) {
+						
+						      ItemStack itemstack = new ItemStack(Material.STICK, 1);
+						      player.getInventory().addItem(new ItemStack[] { itemstack });
+					           }
 					
-					if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
+					       player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+					       player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_sign")));
+					       this.plugin.Tool.put(player.getName(), "sign");
+                            
+						return true;
+					       }
+                     Selection selectedregion = this.plugin.getWorldEdit().getSelection(player);
+                           					
+					   if(selectedregion == null) {
+						
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_not_sign")));
+						return true;
+                       }
+                        if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
 						
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_in_world")));
 						return true;
 					}
 					
-					Selection selectedregion = this.plugin.getWorldEdit().getSelection(player);
+                    
 					
-					if(selectedregion == null) {
-						
-						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
-						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_not_sign")));
-						return true;
-					}
 					
 					if(selectedregion.getWidth() * selectedregion.getLength() < (int)this.plugin.yd.Map().get("zone_area_min")) {
 						
@@ -138,7 +147,92 @@ public class ZoneCommand implements CommandExecutor {
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_area_under")).replace("{0}", this.plugin.yd.Map().get("zone_area_min").toString()));
 						return true;
 					}
+                    
+					if(selectedregion.getWidth() * selectedregion.getLength() > (int)this.plugin.yd.Map().get("zone_area_max")) {
+						
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_area_over")).replace("{0}", this.plugin.yd.Map().get("zone_area_max").toString()));
+						return true;
+					}
 					
+					Location min = selectedregion.getMinimumPoint();
+					Location max = selectedregion.getMaximumPoint();
+					double first_x = min.getX();
+					double first_y = min.getY();
+					double first_z = min.getZ();
+					double second_x = max.getX();
+					double second_y = max.getY();
+					double second_z = max.getZ();
+					ProtectedCuboidRegion protectedcuboidregion = new ProtectedCuboidRegion((String)this.plugin.yd.Map().get("zone_id") + this.plugin.yd.Map().get("zone_id_counter").toString(), new BlockVector(first_x, first_y, first_z), new BlockVector(second_x, second_y, second_z));
+					this.plugin.yd.Map().put("zone_id_counter", Integer.parseInt(this.plugin.yd.Map().get("zone_id_counter").toString()) + 1);
+					this.plugin.yd.Save();
+					
+					if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).overlapsUnownedRegion(protectedcuboidregion, this.plugin.getWorldGuard().wrapPlayer(player))) {
+						
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_overlap")));
+						return true;
+					}
+									
+					ProfileService ps = this.plugin.wg.getProfileService();
+					try { ps.findByName(player.getName()); } catch(Exception e) { e.printStackTrace(); }
+					DefaultDomain domain = new DefaultDomain();
+					domain.addPlayer(this.plugin.wg.wrapPlayer(player));
+					protectedcuboidregion.setOwners(domain);
+					protectedcuboidregion.setPriority(Integer.parseInt((String)this.plugin.yd.Map().get("zone_priority")));
+					
+					/*
+					ProtectRegion.setFlag(DefaultFlag.CREEPER_EXPLOSION, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.FIRE_SPREAD, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.ENDER_BUILD, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.GHAST_FIREBALL, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.LAVA_FIRE, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.MOB_DAMAGE, StateFlag.State.DENY);
+					ProtectRegion.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
+					*/
+					
+					this.plugin.getWorldGuard().getRegionManager(player.getWorld()).addRegion(protectedcuboidregion);
+					
+					player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+					player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_create")));
+					this.plugin.Tool.remove(player.getName());
+					this.plugin.FindLocations.remove(player.getName());
+					this.plugin.Worlds.remove(player.getName());
+					this.plugin.FirstLocations.remove(player.getName());
+					this.plugin.SecondLocations.remove(player.getName());
+					//this.plugin.we.getSession(player).getRegionSelector(plugin.we.getSession(player).getSelectionWorld()).clear();
+					this.plugin.resetCorner(player, this.plugin.corner1);
+					this.plugin.resetCorner(player, this.plugin.corner2);
+					this.plugin.resetCorner(player, this.plugin.corner3);
+					this.plugin.resetCorner(player, this.plugin.corner4);
+					return true;
+                    
+                    
+				}
+				
+				if((args[0].equalsIgnoreCase("finish")) && (args.length < 2)) {
+                    return true;
+					if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
+						
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_in_world")));
+						return true;
+					}
+					
+                    
+					
+					
+					if(selectedregion.getWidth() * selectedregion.getLength() < (int)this.plugin.yd.Map().get("zone_area_min")) {
+						
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
+						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_area_under")).replace("{0}", this.plugin.yd.Map().get("zone_area_min").toString()));
+						return true;
+					}
+                    
 					if(selectedregion.getWidth() * selectedregion.getLength() > (int)this.plugin.yd.Map().get("zone_area_max")) {
 						
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
@@ -363,4 +457,11 @@ public class ZoneCommand implements CommandExecutor {
 		sender.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("console_message")));
 		return true;
 	}
+    private bool createzone()
+    {
+        
+        
+    }
+        
+    
 }

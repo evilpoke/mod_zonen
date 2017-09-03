@@ -18,9 +18,9 @@ config:
   cancel: "&b>> Cancel creation."
   cancel_hover: "&b/zone cancel"
   zone_find: "&bUse the stick to look for a free place by &aleft- &band &aright-click&b."
-  zone_sign: "&bUse the stick to sign the &6first &bpoint by &aleft- &band the &dsecond &bpoint by &aright-click&b."
+  zone_sign: "&bUse the stick to sign the &6first &bpoint by &aleft- &band the &dsecond &bpoint by &aright-click&b. Confirm your selection with &b/zone create"
   zone_in_world: "&cYou already have a zone in this world."
-  zone_not_sign: "&cSign your zone first."
+  zone_not_sign: "&cSign your zone first. Confirm with &b/zone create"
   zone_area_min: 150
   zone_area_max: 15000
   zone_area_under: "&cMinimum area: &b{0}&c"
