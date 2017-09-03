@@ -214,7 +214,7 @@ public class ZoneCommand implements CommandExecutor {
                     
 				}
 				
-				if((args[0].equalsIgnoreCase("finish")) && (args.length < 2)) {
+		/*		if((args[0].equalsIgnoreCase("finish")) && (args.length < 2)) {
                     return true;
 					if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
 						
@@ -266,19 +266,7 @@ public class ZoneCommand implements CommandExecutor {
 					protectedcuboidregion.setOwners(domain);
 					protectedcuboidregion.setPriority(Integer.parseInt((String)this.plugin.yd.Map().get("zone_priority")));
 					
-					/*
-					ProtectRegion.setFlag(DefaultFlag.CREEPER_EXPLOSION, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.ENDERDRAGON_BLOCK_DAMAGE, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.TNT, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.FIRE_SPREAD, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.ENDER_BUILD, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.GHAST_FIREBALL, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.LAVA_FIRE, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.MOB_DAMAGE, StateFlag.State.DENY);
-					ProtectRegion.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
-					*/
+					
 					
 					this.plugin.getWorldGuard().getRegionManager(player.getWorld()).addRegion(protectedcuboidregion);
 					
@@ -296,7 +284,7 @@ public class ZoneCommand implements CommandExecutor {
 					this.plugin.resetCorner(player, this.plugin.corner4);
 					return true;
 				}
-				
+	*/			
 				if((args[0].equalsIgnoreCase("addmember")) && (args.length > 1) && (args.length < 3)) {
 					
 					ProtectedRegion protectedregion = null;
