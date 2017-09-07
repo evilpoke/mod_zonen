@@ -130,17 +130,7 @@ public class ZoneCommand implements CommandExecutor {
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_not_sign")));
 						return true;
-                       }
-                        if(this.plugin.getWorldGuard().getRegionManager(player.getWorld()).getRegion(player.getName()) != null) {
-						
-						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));
-						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("zone_in_world")));
-						return true;
-					}
-					
-                    
-					
-					
+                       }					
 					if(selectedregion.getWidth() * selectedregion.getLength() < (int)this.plugin.yd.Map().get("zone_area_min")) {
 						
 						player.sendMessage(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("head")));

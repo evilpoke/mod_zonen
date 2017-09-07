@@ -2,7 +2,7 @@ name: ZoneMenu
 version: 0.0.3
 description: ZoneMenu
 author: joestr
-authors: [Doskozil, SpamCapsWerbung, _joestr_]
+authors: [Doskozil, SpamCapsWerbung, _joestr_, evilpoke (modded)]
 website: https://repo.joestr.xyz/ZoneMenu
 
 main: xyz.joestr.zonemenu.ZoneMenu
