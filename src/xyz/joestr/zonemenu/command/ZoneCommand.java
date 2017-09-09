@@ -62,6 +62,7 @@ public class ZoneCommand implements CommandExecutor {
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("create_hover")))
 					.create()))
 					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/zone create"))
+                        
 					.append("\n" + this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("addmember")))
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(this.plugin.ColorCode("&", (String)this.plugin.yd.Map().get("addmember_hover")))
 					.create()))

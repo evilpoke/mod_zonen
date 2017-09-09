@@ -3,12 +3,12 @@ This plugin requires [WorldEdit](https://github.com/sk89q/WorldEdit) and [WorldG
 
 **ZoneMenu**  
 Simple, interactive menu for region creation with WorldGuard (and WorldEdit) for players. (Spigot)
+Modded by evilpoke (see plugin.yml for original authors)
 
 **Commands**  
 */zone* - Display interactive menu.  
 */zone find* - Find zones.  
-*/zone sign* - Sign the start- and ending point of your new zone.  
-*/zone create* - Create a zone from your selection.  
+*/zone create* - Sign the start- and ending point of your new zone and then create a zone from that selection.    
 */zone addmember \<player\>* - Add a member to your zone.  
 */zone removemember \<player\>* - Remove a member from your zone.  
 */zone delete* - Delete your zone.  
